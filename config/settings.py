@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9&lac88l394+v3+b9rq9ei!te+_6o(m1h(#on4k2b2+6l4wm27'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['.pinggy.link']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -118,6 +118,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 
