@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter From My Heart</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2d1b42 0%, #44234a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 40px 20px;
+        }
+
+        .letter-container {
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h2 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 2rem;
+            color: #e8e8e8;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .letter-content {
+            color: #d4d4d4;
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+
+        .letter-content p {
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: slideIn 1s ease-out forwards;
+        }
+
+        .letter-content p:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+        .letter-content p:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .letter-content p:nth-child(3) {
+            animation-delay: 1.5s;
+        }
+
+        .letter-content p:nth-child(4) {
+            animation-delay: 2s;
+        }
+
+        .letter-content p:nth-child(5) {
+            animation-delay: 2.5s;
+        }
+
+        .letter-content p:nth-child(6) {
+            animation-delay: 3s;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .highlight {
+            color: #f8a4c8;
+            font-weight: 400;
+        }
+
+        .emphasis {
+            color: #ff9a9e;
+            font-style: italic;
+        }
+
+        .promises {
+            background: rgba(248, 164, 200, 0.08);
+            padding: 20px;
+            border-left: 3px solid #f8a4c8;
+            border-radius: 5px;
+            margin: 30px 0;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            color: #f8a4c8;
+            font-size: 1.1rem;
+        }
+
+        .choice-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .choice-text {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .btn-choice {
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid rgba(248, 164, 200, 0.5);
+            color: #f8a4c8;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-choice:hover {
+            background: rgba(248, 164, 200, 0.15);
+            border-color: #f8a4c8;
+            box-shadow: 0 0 20px rgba(248, 164, 200, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Soft glowing effect */
+        .letter-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(248, 164, 200, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .letter-container {
+                padding: 40px 30px;
+            }
+
+            .header h2 {
+                font-size: 1.6rem;
+            }
+
+            .letter-content {
+                font-size: 0.95rem;
+            }
+
+            .btn-choice {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .letter-container {
+                padding: 30px 20px;
+            }
+
+            .header h2 {
+                font-size: 1.3rem;
+            }
+
+            .letter-content {
+                font-size: 0.88rem;
+                line-height: 1.8;
+            }
+
+            .signature {
+                font-size: 0.95rem;
+            }
+
+            .btn-choice {
+                padding: 12px 25px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="letter-container">
+        <div class="header">
+            <h2>Before We Move Forward...</h2>
+            <p>A letter from my heart to yours</p>
+        </div>
+
+        <div class="letter-content">
+            <p>
+                Dear Laiqa,
+            </p>
+
+            <p>
+                I know some things between us haven’t been perfect, and I’ve made many mistakes.
+            </p>
+
+            <p>
+                But one thing has always been the same—I’ve always been scared of losing you.
+                Sometimes it even feels like that fear is gone, like I could just go away somewhere…
+                but time keeps passing, and nothing really changes.
+            </p>
+
+
+            <p>
+                Finally, I’ve decided that if I’m not going to leave you, why not spend happy,
+                smiling days together? So I will try my best to overcome all the misunderstandings between us.
+                otherwise, I promise I will step back.💖
+            </p>
+
+            <div class="signature">
+                — Maryam Attique
+            </div>
+        </div>
+
+        <div class="choice-section">
+            <a href="/final/" class="btn-choice">I'm Ready to Continue →</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why You're So Special 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 50%, #FFECD2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 56px;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.5);
+            }
+
+            to {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #fff;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            font-size: 18px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 10px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cards-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .card-wrapper {
+            perspective: 1500px;
+            height: 490px;
+            width: 320px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-front .photo-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-front .card-number {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 15px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .card-front .hint {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .card-back .message {
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.7;
+            font-weight: 400;
+            width: 100%;
+        }
+
+        .streaming-text {
+            display: inline-block;
+            min-height: 100px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: white;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .card-wrapper:hover .card:not(.flipped) {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* Different gradient colors for each card front */
+        .card-wrapper:nth-child(1) .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-wrapper:nth-child(2) .card-front {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card-wrapper:nth-child(3) .card-front {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .card-wrapper:nth-child(4) .card-front {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .card-wrapper:nth-child(5) .card-front {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: confetti-fall 3s linear;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Celebration message */
+        .celebration {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-size: 20px;
+            font-weight: 600;
+            color: #f5576c;
+            display: none;
+            animation: slideUp 0.5s ease-out;
+            z-index: 1001;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .celebration.show {
+            display: block;
+        }
+
+        /* Floating hearts background */
+        .bg-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 25px;
+            opacity: 0.15;
+            animation: float-hearts 12s infinite;
+        }
+
+        @keyframes float-hearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.2;
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .instruction {
+                font-size: 15px;
+                padding: 10px 20px;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 10px;
+                justify-items: center;
+            }
+
+            .card-wrapper {
+                width: 90vw;
+                max-width: 340px;
+                height: 400px;
+            }
+
+            body {
+                padding: 25px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .card-wrapper {
+                height: 380px;
+            }
+
+            .card-face {
+                padding: 25px 20px;
+            }
+
+            .card-front .photo-placeholder {
+                width: 110px;
+                height: 110px;
+                font-size: 45px;
+            }
+
+            .card-back .icon {
+                font-size: 40px;
+            }
+
+            .card-back .message {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background hearts -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <!-- Confetti container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Celebration message -->
+    <div class="celebration" id="celebration" onclick="window.location.href='/letter/'" style="cursor: pointer;">
+        🎉 You've discovered all the reasons! <br>
+        <span style="font-size: 16px; display: block; margin-top: 5px;">Click here to continue... 💙</span>
+    </div>
+
+    <div class="header">
+        <h1>Why You're So Special 💖</h1>
+        <div class="subtitle">Here are just a few reasons why you mean so much to me...</div>
+        <div class="instruction">✨ Click each card to reveal the message ✨</div>
+    </div>
+
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card-wrapper">
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-face card-front">
+                    <div class="photo-placeholder">📸</div>
+                    <div class="card-number">Because of who you are 💞</div>
+                    <div class="hint">Click to reveal</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="icon">Your Heart 💞</div>
+                    <div class="message">
+                        <span class="streaming-text"
+                            data-text="You’re special because your heart is softer than you show. You care quietly, love deeply, and stay strong even when it’s hard."></span><span
+                            class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card-wrapper">
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-face card-front">
+                    <div class="photo-placeholder">💻</div>
+                    <div class="card-number">Because of what you do 💻✨</div>
+                    <div class="hint">Click to reveal</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="icon">Your Mind 💻</div>
+                    <div class="message">
+                        <span class="streaming-text"
+                            data-text="You turn problems into solutions. The way you think, create, and stay calm inspires me more than you know."></span><span
+                            class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card-wrapper">
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-face card-front">
+                    <div class="photo-placeholder">🤗</div>
+                    <div class="card-number">Because of what you mean to me ✨</div>
+                    <div class="hint">Click to reveal</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="icon">Your Presence 💝</div>
+                    <div class="message">
+                        <span class="streaming-text"
+                            data-text="Your presence means more to me than I can ever explain. Even when we’re upset or not talking right… having you near is enough. No happiness can replace that."></span><span
+                            class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let flippedCount = 0;
+        const totalCards = 3;
+
+        // Create background hesssarts
+        const bgHearts = document.getElementById('bgHearts');
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = ['💖', '💝', '💗', '💕'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 12 + 's';
+            heart.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            bgHearts.appendChild(heart);
+        }
+
+        function flipCard(card) {
+            if (!card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+                flippedCount++;
+
+                // Start streaming text
+                const messageElement = card.querySelector('.streaming-text');
+                const cursorElement = card.querySelector('.cursor');
+                if (messageElement) {
+                    const text = messageElement.getAttribute('data-text');
+                    streamText(messageElement, text, cursorElement);
+                }
+
+                // Create confetti
+                createConfetti();
+
+                // Check if all cards are flipped
+                if (flippedCount === totalCards) {
+                    setTimeout(() => {
+                        document.getElementById('celebration').classList.add('show');
+                        createMassiveConfetti();
+                    }, 500);
+                }
+            }
+        }
+
+        function streamText(element, text, cursor, index = 0) {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                setTimeout(() => streamText(element, text, cursor, index + 1), 40 + Math.random() * 30);
+            } else if (cursor) {
+                setTimeout(() => cursor.style.display = 'none', 2000);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#c06c84', '#6c5b7b', '#f67280', '#355c7d', '#f8b195', '#c06c84'];
+            const confettiContainer = document.getElementById('confettiContainer');
+
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function createMassiveConfetti() {
+            const colors = ['#ff6b9d', '#c06c84', '#6c5b7b', '#f67280', '#355c7d', '#f8b195', '#c06c84'];
+            const confettiContainer = document.getElementById('confettiContainer');
+
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = (Math.random() * 1) + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 6000);
+            }
+        }
+
+        // Animate cards on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-wrapper');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+
+</html>

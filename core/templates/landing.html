@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Identity Verification</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Pacifico&display=swap"
+        rel="stylesheet">
+    {% load static %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 20%, #ff9a9e 45%, #fecfef 70%, #c2e9fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating background emojis */
+        .floaties {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floaty {
+            position: absolute;
+            animation: floatUp linear infinite;
+            opacity: 0.6;
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* ── MAIN CARD ── */
+        .card {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            width: 360px;
+        }
+
+        /* ── TITLE ── */
+        .main-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, #ff6f91, #ff9671, #845ec2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 6px rgba(255, 111, 145, 0.35));
+            margin-bottom: 6px;
+            animation: titleEntrance 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: rgba(100, 50, 100, 0.65);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        @keyframes titleEntrance {
+            from {
+                transform: translateY(-20px) scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ── CIRCLE SCANNER ── */
+        .scanner-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        /* Orbiting rings */
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+        }
+
+        .orbit-ring:nth-child(1) {
+            width: 214px;
+            height: 214px;
+            border-top-color: #ff6f91;
+            border-right-color: #ffc75f;
+            animation: orbit 3s linear infinite;
+        }
+
+        .orbit-ring:nth-child(2) {
+            width: 234px;
+            height: 234px;
+            border-bottom-color: #845ec2;
+            border-left-color: #a29bfe;
+            animation: orbit 4s linear infinite reverse;
+        }
+
+        .orbit-ring:nth-child(3) {
+            width: 254px;
+            height: 254px;
+            border-top-color: #48c9b0;
+            border-right-color: #fd79a8;
+            animation: orbit 5s linear infinite;
+        }
+
+        @keyframes orbit {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Inner circle — shows placeholder first, then photo */
+        .photo-circle {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px rgba(255, 111, 145, 0.3), 0 0 35px rgba(255, 111, 145, 0.3), 0 6px 24px rgba(0, 0, 0, 0.12);
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Placeholder (before scan) */
+        .circle-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(140, 80, 140, 0.6);
+            transition: all 0.4s ease;
+        }
+
+        .circle-placeholder .icon {
+            font-size: 2.8rem;
+        }
+
+        .circle-placeholder .label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Actual photo (hidden until scan) */
+        .bestie-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0s;
+            /* controlled by JS */
+        }
+
+        /* Scan line overlay */
+        .scan-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+            display: none;
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%);
+            box-shadow: 0 0 14px rgba(255, 200, 255, 0.95);
+            top: 0;
+            animation: scanLine 1.4s linear infinite;
+        }
+
+        @keyframes scanLine {
+            from {
+                top: 0;
+            }
+
+            to {
+                top: 100%;
+            }
+        }
+
+        /* Verified glow */
+        .photo-circle.verified {
+            box-shadow:
+                0 0 0 4px rgba(255, 111, 145, 0.6),
+                0 0 55px rgba(255, 111, 145, 0.65),
+                0 6px 24px rgba(0, 0, 0, 0.15);
+            animation: verifiedPulse 1.2s ease infinite;
+        }
+
+        @keyframes verifiedPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 4px rgba(255, 111, 145, 0.5), 0 0 40px rgba(255, 111, 145, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(255, 111, 145, 0.2), 0 0 70px rgba(255, 111, 145, 0.75);
+            }
+        }
+
+        /* Sparkles */
+        .sparkles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 1.2rem;
+            animation: sparkleOut 1.6s ease-out forwards;
+        }
+
+        @keyframes sparkleOut {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* ── STEP 1: Name Input form ── */
+        #step-input {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(14px);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #5c2d6e;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .name-input::placeholder {
+            color: rgba(130, 70, 150, 0.5);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .name-input:focus {
+            border-color: rgba(255, 111, 145, 0.7);
+            background: rgba(255, 255, 255, 0.75);
+            box-shadow: 0 4px 30px rgba(255, 111, 145, 0.25);
+        }
+
+        .name-input.shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .name-input.wrong-glow {
+            border-color: rgba(255, 180, 100, 0.8);
+            box-shadow: 0 0 20px rgba(255, 150, 100, 0.35);
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #ff6f91, #845ec2);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            box-shadow: 0 6px 25px rgba(255, 111, 145, 0.4);
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(255, 111, 145, 0.55);
+        }
+
+        .verify-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ── Error toast ── */
+        .error-toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 22px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 180, 100, 0.5);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #a04040;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.4s ease;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .error-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .error-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* ── STEP 2: Scanning status ── */
+        #step-scanning {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #845ec2;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            min-width: 260px;
+            justify-content: center;
+            transition: all 0.4s ease;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff6f91;
+            animation: dotPulse 1s ease infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.6);
+                opacity: 0.5;
+            }
+        }
+
+        /* Enter button */
+        .enter-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(135deg, #ff6f91, #845ec2);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(16px) scale(0.9);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            box-shadow: 0 6px 25px rgba(255, 111, 145, 0.4);
+        }
+
+        .enter-btn.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 35px rgba(255, 111, 145, 0.55);
+        }
+
+        .enter-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating emojis -->
+    <div class="floaties" id="floaties"></div>
+
+    <div class="card">
+
+        <div class="main-title">Identity Verification</div>
+        <div class="subtitle">Birthday Access Portal</div>
+
+        <!-- Scanner circle -->
+        <div class="scanner-wrapper" id="scannerWrapper">
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring"></div>
+
+            <div class="photo-circle" id="photoCircle">
+                <!-- Placeholder shown before scan -->
+                <div class="circle-placeholder" id="placeholder">
+                    <div class="icon">🔍</div>
+                    <div class="label">Awaiting</div>
+                </div>
+
+                <!-- Actual photo, revealed during scan -->
+                <img class="bestie-photo" id="bestiePhoto" src="{% static 'images/bestie.jpeg' %}" alt="Bestie" />
+
+                <!-- Scan line overlay -->
+                <div class="scan-overlay" id="scanOverlay">
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+
+            <div class="sparkles" id="sparkles"></div>
+        </div>
+
+        <!-- Step 1: Name input -->
+        <div id="step-input">
+            <div class="input-wrap">
+                <input class="name-input" id="nameInput" type="text" placeholder="Enter your name... 💕"
+                    autocomplete="off" spellcheck="false" onkeydown="handleKey(event)" />
+            </div>
+
+            <button class="verify-btn" onclick="verifyName()">
+                Verify Identity ✨
+            </button>
+
+            <div class="error-toast" id="errorToast">
+                <span class="error-icon" id="errorIcon">🌸</span>
+                <span id="errorMsg">Hmm...</span>
+            </div>
+        </div>
+
+        <!-- Step 2: Scanning + status -->
+        <div id="step-scanning">
+            <div class="status-badge" id="statusBadge">
+                <div class="pulse-dot" id="pulseDot"></div>
+                <span id="scanStatus">Initializing scan...</span>
+            </div>
+            <button class="enter-btn" id="enterBtn" onclick="window.location.href='/welcome/'">
+                Open Your Surprise ✨
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // ── Floating emojis ──
+        const emojis = ['💖', '🌸', '⭐', '💫', '🌺', '💗', '✨', '🦋', '💝', '🌷', '🎀', '🍭', '🫧', '🌙'];
+        const floaties = document.getElementById('floaties');
+        function createFloaty() {
+            const el = document.createElement('div');
+            el.className = 'floaty';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (1.2 + Math.random() * 1.4) + 'rem';
+            const dur = 7 + Math.random() * 9;
+            el.style.animationDuration = dur + 's';
+            el.style.animationDelay = (-Math.random() * dur) + 's';
+            floaties.appendChild(el);
+            setTimeout(() => el.remove(), dur * 1000);
+        }
+        for (let i = 0; i < 20; i++) createFloaty();
+        setInterval(createFloaty, 1100);
+
+        // ── Wrong-name messages (elegant, playful, not childish) ──
+
+
+
+        const errorMessages = [
+            { icon: '🌸', text: "Hmm… that’s not the name I’m looking for 👀" },
+            { icon: '🤍', text: "Access denied. This surprise belongs to someone special 💗" },
+            { icon: '✨', text: "Nice try… but this portal only opens for one person ✨" },
+            { icon: '💌', text: "Error 404: Not My Person 😌" },
+            { icon: '🦋', text: "This portal only opens for one special soul." },
+            { icon: '🌙', text: "System says… you’re not her 😭" },
+        ];
+        let errorIdx = 0;
+
+        function handleKey(event) {
+            if (event.key === 'Enter') verifyName();
+        }
+
+        function verifyName() {
+            const input = document.getElementById('nameInput');
+            const name = input.value.trim();
+
+            if (!name) {
+                flashError({ icon: '💭', text: "Type your name first, pretty please!" });
+                shakeInput();
+                return;
+            }
+
+            if (name.toLowerCase() === 'laiqa') {
+                startVerifiedFlow();
+            } else {
+                const msg = errorMessages[errorIdx % errorMessages.length];
+                errorIdx++;
+                flashError(msg);
+                shakeInput();
+                // Add wrong glow briefly
+                input.classList.remove('wrong-glow');
+                setTimeout(() => input.classList.add('wrong-glow'), 10);
+                setTimeout(() => input.classList.remove('wrong-glow'), 2500);
+            }
+        }
+
+        function shakeInput() {
+            const input = document.getElementById('nameInput');
+            input.classList.remove('shake');
+            void input.offsetWidth; // reflow
+            input.classList.add('shake');
+            setTimeout(() => input.classList.remove('shake'), 600);
+        }
+
+        function flashError(msg) {
+            const toast = document.getElementById('errorToast');
+            const icon = document.getElementById('errorIcon');
+            const text = document.getElementById('errorMsg');
+            toast.classList.remove('show');
+            setTimeout(() => {
+                icon.textContent = msg.icon;
+                text.textContent = msg.text;
+                toast.classList.add('show');
+            }, 80);
+        }
+
+        // ── Verified Flow ──
+        function startVerifiedFlow() {
+            // Hide input step
+            const stepInput = document.getElementById('step-input');
+            stepInput.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            stepInput.style.opacity = '0';
+            stepInput.style.transform = 'translateY(8px)';
+
+            setTimeout(() => {
+                stepInput.style.display = 'none';
+                beginScan();
+            }, 400);
+        }
+
+        function beginScan() {
+            const scanOverlay = document.getElementById('scanOverlay');
+            const placeholder = document.getElementById('placeholder');
+            const bestiePhoto = document.getElementById('bestiePhoto');
+            const photoCircle = document.getElementById('photoCircle');
+            const scanStatus = document.getElementById('scanStatus');
+            const pulseDot = document.getElementById('pulseDot');
+            const statusBadge = document.getElementById('statusBadge');
+            const enterBtn = document.getElementById('enterBtn');
+            const stepScanning = document.getElementById('step-scanning');
+
+            // Show scanning step
+            stepScanning.style.display = 'flex';
+
+            // Step 1 — Start scan line, fade placeholder
+            scanOverlay.style.display = 'block';
+            placeholder.style.opacity = '0';
+            scanStatus.textContent = '🔍 Scanning identity...';
+            pulseDot.style.background = '#ffc75f';
+
+            // Mid-scan: photo starts fading in behind scan line
+            setTimeout(() => {
+                scanStatus.textContent = '💭 Analyzing biometric data...';
+                pulseDot.style.background = '#a29bfe';
+                // Start revealing photo gradually
+                bestiePhoto.style.transition = 'opacity 1.2s ease';
+                bestiePhoto.style.opacity = '0.4';
+            }, 1300);
+
+            setTimeout(() => {
+                scanStatus.textContent = '💌 Matching Name with Secure Database…';
+                pulseDot.style.background = '#fd79a8';
+                // More of the photo visible
+                bestiePhoto.style.opacity = '0.75';
+            }, 2600);
+
+            setTimeout(() => {
+                // Full reveal + stop scan
+                scanOverlay.style.display = 'none';
+                bestiePhoto.style.opacity = '1';
+                bestiePhoto.style.transition = 'opacity 0.5s ease';
+                placeholder.style.display = 'none';
+
+                // SUCCESS
+                photoCircle.classList.add('verified');
+
+                scanStatus.innerHTML = '💖 My Person VERIFIED! ✨';
+                pulseDot.style.background = '#00b894';
+                pulseDot.style.animation = 'none';
+                pulseDot.style.transform = 'scale(1)';
+                statusBadge.style.background = 'rgba(255,255,255,0.8)';
+                statusBadge.style.borderColor = '#ff6f91';
+                statusBadge.style.color = '#ff6f91';
+                statusBadge.style.boxShadow = '0 4px 30px rgba(255,111,145,0.3)';
+
+                // Sparkles + confetti
+                showSparkles();
+                confettiBurst();
+
+                // Show enter btn
+                setTimeout(() => enterBtn.classList.add('show'), 500);
+
+            }, 4000);
+        }
+
+        // ── Sparkles ──
+        function showSparkles() {
+            const el = document.getElementById('sparkles');
+            el.style.display = 'block';
+            el.innerHTML = '';
+            const positions = [
+                { tx: '-95px', ty: '-85px' }, { tx: '95px', ty: '-85px' },
+                { tx: '-110px', ty: '10px' }, { tx: '110px', ty: '10px' },
+                { tx: '-70px', ty: '90px' }, { tx: '70px', ty: '90px' },
+                { tx: '0px', ty: '-110px' },
+            ];
+            const sparkEmojis = ['✨', '💫', '⭐', '🌟', '💖', '🎉', '🌸'];
+            positions.forEach((pos, i) => {
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                s.textContent = sparkEmojis[i];
+                s.style.setProperty('--tx', pos.tx);
+                s.style.setProperty('--ty', pos.ty);
+                s.style.animationDelay = (i * 0.07) + 's';
+                el.appendChild(s);
+            });
+            setTimeout(showSparkles, 2000);
+        }
+
+        // ── Confetti Burst ──
+        function confettiBurst() {
+            const colors = ['#ff6f91', '#ffc75f', '#845ec2', '#00b894', '#ff9671', '#a29bfe', '#fd79a8'];
+            for (let i = 0; i < 65; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.left = (25 + Math.random() * 50) + 'vw';
+                el.style.top = '45vh';
+                el.style.width = (6 + Math.random() * 10) + 'px';
+                el.style.height = (6 + Math.random() * 10) + 'px';
+                el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                document.body.appendChild(el);
+                const angle = Math.random() * Math.PI * 2;
+                const v = 220 + Math.random() * 320;
+                el.animate([
+                    { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${Math.cos(angle) * v}px, ${Math.sin(angle) * v - 220}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: 900 + Math.random() * 700,
+                    easing: 'cubic-bezier(0.25,0.46,0.45,0.94)',
+                    fill: 'forwards'
+                }).onfinish = () => el.remove();
+            }
+        }
+    </script>
+</body>
+
+</html>
