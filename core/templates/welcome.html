@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Laiqa 🎂</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Poppins:wght@400;600;700;800&display=swap"
         rel="stylesheet">
     <style>
         * {
@@ -28,7 +29,193 @@
             background: radial-gradient(ellipse at center, #1a0a2e 0%, #0f0520 40%, #0a0514 100%);
         }
 
-        /* ── Starfield canvas ── */
+        /* ══════════════════════════════════════
+           SPLASH SCREEN
+           ══════════════════════════════════════ */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: radial-gradient(ellipse at center, #1a0825 0%, #0d0518 50%, #050210 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.08);
+            pointer-events: none;
+        }
+
+        #bokeh-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #splash-gif-wrap {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: splashEntry 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        @keyframes splashEntry {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #splash-gif-wrap img {
+            width: clamp(180px, 45vw, 320px);
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(255, 170, 80, 0.4), 0 0 120px rgba(255, 100, 200, 0.2);
+            animation: gifPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gifPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 60px rgba(255, 170, 80, 0.4), 0 0 120px rgba(255, 100, 200, 0.2);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 0 90px rgba(255, 170, 80, 0.6), 0 0 160px rgba(255, 100, 200, 0.35);
+                transform: scale(1.03);
+            }
+        }
+
+        #splash-gif-wrap::before {
+            content: '';
+            position: absolute;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(ellipse, rgba(255, 170, 80, 0.12) 0%, transparent 70%);
+            z-index: -1;
+            animation: haloBreath 4s ease-in-out infinite;
+        }
+
+        @keyframes haloBreath {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        #splash-hint {
+            position: relative;
+            z-index: 5;
+            margin-top: 40px;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            color: rgba(255, 215, 180, 0.6);
+            letter-spacing: 2px;
+            animation: hintPulse 2s ease-in-out infinite, hintEntry 1.5s 1s both;
+        }
+
+        @keyframes hintPulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes hintEntry {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ══════════════════════════════════════
+           MUSIC BUTTON
+           ══════════════════════════════════════ */
+        #music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 215, 0, 0.3);
+            background: rgba(15, 5, 30, 0.6);
+            backdrop-filter: blur(12px);
+            color: #ffd700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #music-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        #music-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.25);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        #music-btn.playing {
+            animation: musicPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 0 35px rgba(255, 215, 0, 0.35);
+            }
+        }
+
+        /* ══════════════════════════════════════
+           STAR / FX CANVASES
+           ══════════════════════════════════════ */
         #stars-canvas {
             position: fixed;
             inset: 0;
@@ -37,7 +224,6 @@
             z-index: 1;
         }
 
-        /* ── Particle/fireworks canvas ── */
         #fx-canvas {
             position: fixed;
             inset: 0;
@@ -47,7 +233,9 @@
             pointer-events: none;
         }
 
-        /* ── Central content ── */
+        /* ══════════════════════════════════════
+           CONTENT
+           ══════════════════════════════════════ */
         #content {
             position: fixed;
             inset: 0;
@@ -73,32 +261,33 @@
             letter-spacing: 3px;
             animation: none;
             white-space: nowrap;
+            margin-bottom: clamp(15px, 3vw, 30px);
         }
 
         #line1.show {
             opacity: 1;
         }
 
-        /* ── "LAIQA" name ── */
+        /* ── "LAIQA" name — elegant serif ── */
         #name-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(4px, 1.5vw, 12px);
-            margin-top: 10px;
+            gap: clamp(6px, 2vw, 16px);
+            margin-top: clamp(15px, 3vw, 35px);
             height: clamp(60px, 14vw, 120px);
         }
 
         .name-letter {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 800;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
             font-size: clamp(3rem, 12vw, 8rem);
             color: transparent;
-            background: linear-gradient(135deg, #ff6fd8, #ff9a56, #ffd700, #ff6fd8);
+            background: linear-gradient(170deg, #f5d5a0 0%, #e8b873 25%, #daa556 45%, #c8878e 70%, #b292b5 100%);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(255, 111, 216, 0.5));
+            filter: drop-shadow(0 0 25px rgba(218, 165, 86, 0.45)) drop-shadow(0 0 55px rgba(200, 135, 142, 0.25));
             opacity: 0;
             transform: scale(0) rotateY(90deg);
             display: inline-block;
@@ -165,7 +354,7 @@
             color: #ff9ec5;
             opacity: 0;
             transform: translateY(20px);
-            margin-top: 20px;
+            margin-top: clamp(25px, 4vw, 50px);
             text-shadow: 0 0 25px rgba(255, 158, 197, 0.6), 0 0 50px rgba(255, 100, 170, 0.3);
             letter-spacing: 2px;
         }
@@ -200,7 +389,7 @@
             }
         }
 
-        /* ── Emoji celebration ── */
+        /* ── Emojis ── */
         .celebration-emoji {
             position: fixed;
             font-size: 2rem;
@@ -272,7 +461,7 @@
             background: linear-gradient(135deg, rgba(255, 111, 216, 0.35), rgba(255, 154, 86, 0.35));
         }
 
-        /* ── Vignette overlay ── */
+        /* ── Vignette ── */
         #vignette {
             position: fixed;
             inset: 0;
@@ -284,6 +473,20 @@
 </head>
 
 <body>
+    <!-- ══ SPLASH SCREEN ══ -->
+    <div id="splash-screen">
+        <canvas id="bokeh-canvas"></canvas>
+        <div id="splash-gif-wrap">
+            <img src="{% static 'giff/Happy Birthday Birthday Cake GIF - Happy Birthday Birthday Cake Happy - Discover & Share GIFs.gif' %}"
+                alt="Birthday Cake">
+        </div>
+        <div id="splash-hint">✨ Tap anywhere to begin ✨</div>
+    </div>
+
+    <!-- ══ MUSIC BUTTON ══ -->
+    <button id="music-btn" title="Toggle Music">🎵</button>
+
+    <!-- ══ MAIN CONTENT ══ -->
     <canvas id="stars-canvas"></canvas>
     <div id="vignette"></div>
     <canvas id="fx-canvas"></canvas>
@@ -294,11 +497,246 @@
         <div id="meri-jann">Meri Jann 💕</div>
     </div>
 
-    <button id="go-btn" onclick="window.location.href='/game/'">Let's Play a Game 🎮</button>
+    <button id="go-btn" onclick="window.location.href='/game/'">Unlock My Surprise 🔓</button>
 
     <script>
         // ══════════════════════════════════════════════
-        //  SETUP
+        //  SPLASH SCREEN + BOKEH
+        // ══════════════════════════════════════════════
+        const splash = document.getElementById('splash-screen');
+        const bokehC = document.getElementById('bokeh-canvas');
+        const bokehCtx = bokehC.getContext('2d');
+        let splashDismissed = false;
+        let BW, BH;
+
+        function resizeBokeh() {
+            BW = window.innerWidth; BH = window.innerHeight;
+            bokehC.width = BW; bokehC.height = BH;
+        }
+        resizeBokeh();
+        window.addEventListener('resize', resizeBokeh);
+
+        // Bokeh particles
+        const bokeh = [];
+        for (let i = 0; i < 45; i++) {
+            bokeh.push({
+                x: Math.random() * BW, y: Math.random() * BH,
+                r: 8 + Math.random() * 35,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: -0.15 - Math.random() * 0.4,
+                alpha: 0.08 + Math.random() * 0.2,
+                hue: [38, 340, 28, 55, 325, 45][Math.floor(Math.random() * 6)],
+                sat: 60 + Math.random() * 30,
+                phase: Math.random() * Math.PI * 2,
+            });
+        }
+
+        function drawBokeh(t) {
+            bokehCtx.clearRect(0, 0, BW, BH);
+            bokeh.forEach(p => {
+                p.x += p.vx + Math.sin(t * 0.0008 + p.phase) * 0.25;
+                p.y += p.vy;
+                if (p.y < -p.r * 2) { p.y = BH + p.r; p.x = Math.random() * BW; }
+                if (p.x < -p.r * 2) p.x = BW + p.r;
+                if (p.x > BW + p.r * 2) p.x = -p.r;
+
+                const a = p.alpha * (0.5 + 0.5 * Math.sin(t * 0.0015 + p.phase));
+                const g = bokehCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+                g.addColorStop(0, `hsla(${p.hue}, ${p.sat}%, 70%, ${a})`);
+                g.addColorStop(0.4, `hsla(${p.hue}, ${p.sat}%, 65%, ${a * 0.4})`);
+                g.addColorStop(1, 'transparent');
+                bokehCtx.beginPath();
+                bokehCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                bokehCtx.fillStyle = g;
+                bokehCtx.fill();
+            });
+        }
+
+        let bokehRAF;
+        function bokehLoop(t) {
+            if (splashDismissed) return;
+            drawBokeh(t);
+            bokehRAF = requestAnimationFrame(bokehLoop);
+        }
+        requestAnimationFrame(bokehLoop);
+
+        function dismissSplash() {
+            if (splashDismissed) return;
+            splashDismissed = true;
+            splash.classList.add('fade-out');
+            cancelAnimationFrame(bokehRAF);
+            tryStartMusic();
+            setTimeout(() => {
+                splash.style.display = 'none';
+                startTimeline();
+            }, 1500);
+        }
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(dismissSplash, 5000);
+        // Or tap to dismiss early
+        splash.addEventListener('click', dismissSplash);
+        splash.addEventListener('touchstart', (e) => { e.preventDefault(); dismissSplash(); }, { passive: false });
+
+        // ══════════════════════════════════════════════
+        //  MUSIC SYSTEM (Web Audio API)
+        // ══════════════════════════════════════════════
+        const musicBtn = document.getElementById('music-btn');
+        let audioCtx = null;
+        let musicPlaying = false;
+        let melodySource = null;
+        let melodyBuffer = null;
+        let currentSong = 0;
+        const TOTAL_SONGS = 3;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        // Create a note in an offline context
+        function renderNote(ctx, freq, startTime, duration, vol) {
+            // Fundamental
+            const osc1 = ctx.createOscillator();
+            const g1 = ctx.createGain();
+            osc1.type = 'sine'; osc1.frequency.value = freq;
+            g1.gain.setValueAtTime(0, startTime);
+            g1.gain.linearRampToValueAtTime(vol, startTime + 0.015);
+            g1.gain.exponentialRampToValueAtTime(vol * 0.35, startTime + duration * 0.5);
+            g1.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.95);
+            osc1.connect(g1); g1.connect(ctx.destination);
+            osc1.start(startTime); osc1.stop(startTime + duration);
+
+            // 2nd harmonic (music box brightness)
+            const osc2 = ctx.createOscillator();
+            const g2 = ctx.createGain();
+            osc2.type = 'sine'; osc2.frequency.value = freq * 2;
+            g2.gain.setValueAtTime(0, startTime);
+            g2.gain.linearRampToValueAtTime(vol * 0.4, startTime + 0.01);
+            g2.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.4);
+            osc2.connect(g2); g2.connect(ctx.destination);
+            osc2.start(startTime); osc2.stop(startTime + duration);
+
+            // Sub-octave warmth
+            const osc3 = ctx.createOscillator();
+            const g3 = ctx.createGain();
+            osc3.type = 'sine'; osc3.frequency.value = freq / 2;
+            g3.gain.setValueAtTime(0, startTime);
+            g3.gain.linearRampToValueAtTime(vol * 0.2, startTime + 0.02);
+            g3.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.7);
+            osc3.connect(g3); g3.connect(ctx.destination);
+            osc3.start(startTime); osc3.stop(startTime + duration);
+        }
+
+        // Happy Birthday melody data
+        const BT = 0.48; // beat duration
+        const melodies = [
+            // Song 1: Music Box (G major, higher octave)
+            [
+                { f: 392, t: 0, d: BT * .7 }, { f: 392, t: BT * .5, d: BT * .4 },
+                { f: 440, t: BT, d: BT }, { f: 392, t: BT * 2, d: BT }, { f: 523.25, t: BT * 3, d: BT }, { f: 493.88, t: BT * 4, d: BT * 1.6 },
+                { f: 392, t: BT * 6, d: BT * .7 }, { f: 392, t: BT * 6.5, d: BT * .4 },
+                { f: 440, t: BT * 7, d: BT }, { f: 392, t: BT * 8, d: BT }, { f: 587.33, t: BT * 9, d: BT }, { f: 523.25, t: BT * 10, d: BT * 1.6 },
+                { f: 392, t: BT * 12, d: BT * .7 }, { f: 392, t: BT * 12.5, d: BT * .4 },
+                { f: 783.99, t: BT * 13, d: BT }, { f: 659.25, t: BT * 14, d: BT }, { f: 523.25, t: BT * 15, d: BT }, { f: 493.88, t: BT * 16, d: BT }, { f: 440, t: BT * 17, d: BT * 1.6 },
+                { f: 698.46, t: BT * 19, d: BT * .7 }, { f: 698.46, t: BT * 19.5, d: BT * .4 },
+                { f: 659.25, t: BT * 20, d: BT }, { f: 523.25, t: BT * 21, d: BT }, { f: 587.33, t: BT * 22, d: BT }, { f: 523.25, t: BT * 23, d: BT * 2 },
+            ],
+            // Song 2: Warm Piano (F major, lower octave)
+            [
+                { f: 261.63, t: 0, d: BT * .7 }, { f: 261.63, t: BT * .5, d: BT * .4 },
+                { f: 293.66, t: BT, d: BT }, { f: 261.63, t: BT * 2, d: BT }, { f: 349.23, t: BT * 3, d: BT }, { f: 329.63, t: BT * 4, d: BT * 1.6 },
+                { f: 261.63, t: BT * 6, d: BT * .7 }, { f: 261.63, t: BT * 6.5, d: BT * .4 },
+                { f: 293.66, t: BT * 7, d: BT }, { f: 261.63, t: BT * 8, d: BT }, { f: 392, t: BT * 9, d: BT }, { f: 349.23, t: BT * 10, d: BT * 1.6 },
+                { f: 261.63, t: BT * 12, d: BT * .7 }, { f: 261.63, t: BT * 12.5, d: BT * .4 },
+                { f: 523.25, t: BT * 13, d: BT }, { f: 440, t: BT * 14, d: BT }, { f: 349.23, t: BT * 15, d: BT }, { f: 329.63, t: BT * 16, d: BT }, { f: 293.66, t: BT * 17, d: BT * 1.6 },
+                { f: 466.16, t: BT * 19, d: BT * .7 }, { f: 466.16, t: BT * 19.5, d: BT * .4 },
+                { f: 440, t: BT * 20, d: BT }, { f: 349.23, t: BT * 21, d: BT }, { f: 392, t: BT * 22, d: BT }, { f: 349.23, t: BT * 23, d: BT * 2 },
+            ],
+            // Song 3: Dreamy Celeste (Bb major, mid-high — softer, floaty)
+            [
+                { f: 466.16, t: 0, d: BT * .8 }, { f: 466.16, t: BT * .55, d: BT * .45 },
+                { f: 523.25, t: BT * 1.1, d: BT * 1.1 }, { f: 466.16, t: BT * 2.2, d: BT * 1.1 }, { f: 622.25, t: BT * 3.3, d: BT * 1.1 }, { f: 587.33, t: BT * 4.4, d: BT * 1.8 },
+                { f: 466.16, t: BT * 6.5, d: BT * .8 }, { f: 466.16, t: BT * 7.05, d: BT * .45 },
+                { f: 523.25, t: BT * 7.6, d: BT * 1.1 }, { f: 466.16, t: BT * 8.7, d: BT * 1.1 }, { f: 698.46, t: BT * 9.8, d: BT * 1.1 }, { f: 622.25, t: BT * 10.9, d: BT * 1.8 },
+                { f: 466.16, t: BT * 13, d: BT * .8 }, { f: 466.16, t: BT * 13.55, d: BT * .45 },
+                { f: 932.33, t: BT * 14.1, d: BT * 1.1 }, { f: 783.99, t: BT * 15.2, d: BT * 1.1 }, { f: 622.25, t: BT * 16.3, d: BT * 1.1 }, { f: 587.33, t: BT * 17.4, d: BT * 1.1 }, { f: 523.25, t: BT * 18.5, d: BT * 1.8 },
+                { f: 830.61, t: BT * 20.5, d: BT * .8 }, { f: 830.61, t: BT * 21.05, d: BT * .45 },
+                { f: 783.99, t: BT * 21.6, d: BT * 1.1 }, { f: 622.25, t: BT * 22.7, d: BT * 1.1 }, { f: 698.46, t: BT * 23.8, d: BT * 1.1 }, { f: 622.25, t: BT * 24.9, d: BT * 2.2 },
+            ],
+        ];
+
+        async function createMelodyBuffer(songIdx) {
+            const notes = melodies[songIdx];
+            const dur = BT * 28;
+            const sr = 44100;
+            const offline = new OfflineAudioContext(1, sr * dur, sr);
+
+            const vol = songIdx === 0 ? 0.12 : songIdx === 1 ? 0.1 : 0.09;
+            notes.forEach(n => renderNote(offline, n.f, n.t, n.d, vol));
+
+            return await offline.startRendering();
+        }
+
+        async function playMelody() {
+            if (!audioCtx) return;
+            if (melodySource) { try { melodySource.stop(); } catch (e) { } }
+
+            melodyBuffer = await createMelodyBuffer(currentSong);
+            melodySource = audioCtx.createBufferSource();
+            melodySource.buffer = melodyBuffer;
+            melodySource.loop = true;
+
+            // Simple delay for warmth
+            const delay = audioCtx.createDelay();
+            delay.delayTime.value = 0.12;
+            const fb = audioCtx.createGain();
+            fb.gain.value = 0.15;
+            const masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0.8;
+
+            melodySource.connect(masterGain);
+            melodySource.connect(delay);
+            delay.connect(fb);
+            fb.connect(delay);
+            delay.connect(masterGain);
+            masterGain.connect(audioCtx.destination);
+
+            melodySource.start();
+            musicPlaying = true;
+            musicBtn.textContent = '🎵';
+            musicBtn.classList.add('playing');
+        }
+
+        function stopMelody() {
+            if (melodySource) { try { melodySource.stop(); } catch (e) { } melodySource = null; }
+            musicPlaying = false;
+            musicBtn.textContent = '🔇';
+            musicBtn.classList.remove('playing');
+        }
+
+        function tryStartMusic() {
+            initAudio();
+            if (!musicPlaying) {
+                playMelody().catch(() => { });
+            }
+            musicBtn.classList.add('visible');
+        }
+
+        musicBtn.addEventListener('click', () => {
+            initAudio();
+            if (musicPlaying) {
+                stopMelody();
+            } else {
+                currentSong = (currentSong + 1) % TOTAL_SONGS;
+                playMelody().catch(() => { });
+            }
+        });
+
+        // ══════════════════════════════════════════════
+        //  MAIN PAGE SETUP
         // ══════════════════════════════════════════════
         const starsC = document.getElementById('stars-canvas');
         const starsCtx = starsC.getContext('2d');
@@ -307,8 +745,7 @@
 
         let W, H;
         function resize() {
-            W = window.innerWidth;
-            H = window.innerHeight;
+            W = window.innerWidth; H = window.innerHeight;
             starsC.width = fxC.width = W;
             starsC.height = fxC.height = H;
         }
@@ -321,10 +758,8 @@
         const stars = [];
         for (let i = 0; i < 200; i++) {
             stars.push({
-                x: Math.random() * W,
-                y: Math.random() * H,
-                r: 0.3 + Math.random() * 1.8,
-                alpha: Math.random(),
+                x: Math.random() * W, y: Math.random() * H,
+                r: 0.3 + Math.random() * 1.8, alpha: Math.random(),
                 speed: 0.003 + Math.random() * 0.008,
                 phase: Math.random() * Math.PI * 2,
             });
@@ -338,8 +773,6 @@
                 starsCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
                 starsCtx.fillStyle = `rgba(255, 255, 240, ${a * s.alpha})`;
                 starsCtx.fill();
-
-                // Glow for bigger stars
                 if (s.r > 1.2) {
                     starsCtx.beginPath();
                     starsCtx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
@@ -372,7 +805,7 @@
                     tx: W / 2 + (Math.random() - 0.5) * 100,
                     ty: H / 2 + (Math.random() - 0.5) * 60,
                     size: 1 + Math.random() * 3,
-                    hue: 40 + Math.random() * 30, // gold range
+                    hue: 40 + Math.random() * 30,
                     delay: Math.random() * 600,
                     trail: [],
                 });
@@ -382,29 +815,19 @@
         function updateSparkles(t) {
             if (!swirlActive) return;
             const elapsed = t - swirlStart;
-
             fxCtx.clearRect(0, 0, W, H);
-
             sparkles.forEach(s => {
                 const e = Math.max(0, elapsed - s.delay);
                 const p = Math.min(1, e / SWIRL_GATHER_MS);
-                const ease = 1 - Math.pow(1 - p, 3); // easeOutCubic
-
-                // Spiral path toward target
+                const ease = 1 - Math.pow(1 - p, 3);
                 const spiralAngle = (1 - ease) * Math.PI * 4;
                 const radius = (1 - ease) * Math.max(W, H) * 0.5;
-
                 const baseX = s.x + (s.tx - s.x) * ease;
                 const baseY = s.y + (s.ty - s.y) * ease;
-
                 const cx = baseX + Math.cos(spiralAngle) * radius * 0.15;
                 const cy = baseY + Math.sin(spiralAngle) * radius * 0.15;
-
-                // Trail
                 s.trail.push({ x: cx, y: cy });
                 if (s.trail.length > 8) s.trail.shift();
-
-                // Draw trail
                 s.trail.forEach((tp, i) => {
                     const ta = (i / s.trail.length) * 0.35;
                     fxCtx.beginPath();
@@ -412,8 +835,6 @@
                     fxCtx.fillStyle = `hsla(${s.hue}, 100%, 75%, ${ta})`;
                     fxCtx.fill();
                 });
-
-                // Draw spark
                 const glow = fxCtx.createRadialGradient(cx, cy, 0, cx, cy, s.size * 4);
                 glow.addColorStop(0, `hsla(${s.hue}, 100%, 80%, ${0.7 * (0.5 + 0.5 * Math.sin(t * 0.005 + s.delay))})`);
                 glow.addColorStop(1, 'transparent');
@@ -421,7 +842,6 @@
                 fxCtx.arc(cx, cy, s.size * 4, 0, Math.PI * 2);
                 fxCtx.fillStyle = glow;
                 fxCtx.fill();
-
                 fxCtx.beginPath();
                 fxCtx.arc(cx, cy, s.size, 0, Math.PI * 2);
                 fxCtx.fillStyle = `hsla(${s.hue}, 100%, 90%, 0.95)`;
@@ -441,14 +861,10 @@
                 const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
                 const speed = 2 + Math.random() * 5;
                 fwParticles.push({
-                    x, y,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    life: 1,
-                    decay: 0.012 + Math.random() * 0.015,
+                    x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                    life: 1, decay: 0.012 + Math.random() * 0.015,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    size: 1.5 + Math.random() * 2,
-                    trail: [],
+                    size: 1.5 + Math.random() * 2, trail: [],
                 });
             }
         }
@@ -461,33 +877,19 @@
                 ['#a855f7', '#c084fc', '#e9d5ff'],
                 ['#ff416c', '#ff6f91', '#ffafcc'],
             ];
-
-            // Staggered launches
             const positions = [
-                { x: W * 0.2, y: H * 0.25 },
-                { x: W * 0.8, y: H * 0.3 },
-                { x: W * 0.5, y: H * 0.2 },
-                { x: W * 0.35, y: H * 0.35 },
-                { x: W * 0.65, y: H * 0.22 },
-                { x: W * 0.15, y: H * 0.4 },
+                { x: W * 0.2, y: H * 0.25 }, { x: W * 0.8, y: H * 0.3 },
+                { x: W * 0.5, y: H * 0.2 }, { x: W * 0.35, y: H * 0.35 },
+                { x: W * 0.65, y: H * 0.22 }, { x: W * 0.15, y: H * 0.4 },
                 { x: W * 0.85, y: H * 0.35 },
             ];
-
             positions.forEach((pos, i) => {
-                setTimeout(() => {
-                    launchFirework(pos.x, pos.y, colorSets[i % colorSets.length]);
-                }, i * 300);
+                setTimeout(() => launchFirework(pos.x, pos.y, colorSets[i % colorSets.length]), i * 300);
             });
-
-            // Second wave
             setTimeout(() => {
                 positions.slice(0, 4).forEach((pos, i) => {
                     setTimeout(() => {
-                        launchFirework(
-                            pos.x + (Math.random() - 0.5) * 100,
-                            pos.y + (Math.random() - 0.5) * 50,
-                            colorSets[(i + 2) % colorSets.length]
-                        );
+                        launchFirework(pos.x + (Math.random() - 0.5) * 100, pos.y + (Math.random() - 0.5) * 50, colorSets[(i + 2) % colorSets.length]);
                     }, i * 250);
                 });
             }, 2500);
@@ -498,33 +900,18 @@
                 const p = fwParticles[i];
                 p.trail.push({ x: p.x, y: p.y });
                 if (p.trail.length > 5) p.trail.shift();
-
-                p.vx *= 0.98;
-                p.vy *= 0.98;
-                p.vy += 0.03;
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= p.decay;
-
-                if (p.life <= 0) {
-                    fwParticles.splice(i, 1);
-                    continue;
-                }
-
-                // Draw trail
+                p.vx *= 0.98; p.vy *= 0.98; p.vy += 0.03;
+                p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+                if (p.life <= 0) { fwParticles.splice(i, 1); continue; }
                 p.trail.forEach((tp, j) => {
                     const ta = (j / p.trail.length) * p.life * 0.3;
                     fxCtx.beginPath();
                     fxCtx.arc(tp.x, tp.y, p.size * 0.4, 0, Math.PI * 2);
-                    fxCtx.fillStyle = p.color.replace(')', `, ${ta})`).replace('rgb', 'rgba').replace('#', '');
-                    // Use hex color with alpha
                     fxCtx.globalAlpha = ta;
                     fxCtx.fillStyle = p.color;
                     fxCtx.fill();
                     fxCtx.globalAlpha = 1;
                 });
-
-                // Draw particle
                 const glow = fxCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
                 glow.addColorStop(0, p.color);
                 glow.addColorStop(1, 'transparent');
@@ -533,7 +920,6 @@
                 fxCtx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
                 fxCtx.fillStyle = glow;
                 fxCtx.fill();
-
                 fxCtx.globalAlpha = p.life;
                 fxCtx.beginPath();
                 fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -547,7 +933,7 @@
         //  CELEBRATION EMOJIS
         // ══════════════════════════════════════════════
         function spawnEmojis() {
-            const emojis = ['🎂', '🍫', '🧁', '🎁', '🎊', '🎉', '🎈', '🍰', '🥳', '🎀', '🪅', '🍭', '🍬', '🎵', '🪩', '💖'];
+            const emojis = ['🎈', '🎈', '🎈', '🎂', '🎈', '🎁', '🎈', '🎊', '🎈', '🎉', '🎈', '🎀', '🎈', '🪅', '🎈', '🎂', '🎉', '🎈', '🎊', '🎁', '🎈', '🎀', '🎈', '🪅', '🎈', '🎉', '🎈', '🎂'];
             let count = 0;
             const interval = setInterval(() => {
                 if (count > 50) { clearInterval(interval); return; }
@@ -580,35 +966,23 @@
                 el.style.background = colors[Math.floor(Math.random() * colors.length)];
                 el.style.left = (W / 2 + (Math.random() - 0.5) * W * 0.3) + 'px';
                 el.style.top = (H * 0.3) + 'px';
-
                 const vx = (Math.random() - 0.5) * 15;
                 const vy = -8 - Math.random() * 12;
                 let x = parseFloat(el.style.left);
                 let y = parseFloat(el.style.top);
                 let rot = Math.random() * 360;
                 let opacity = 1;
-
                 document.body.appendChild(el);
-
                 let cvx = vx, cvy = vy;
                 const anim = () => {
-                    cvy += 0.25;
-                    cvx *= 0.99;
-                    x += cvx;
-                    y += cvy;
-                    rot += cvx * 2;
-                    opacity -= 0.008;
-
+                    cvy += 0.25; cvx *= 0.99;
+                    x += cvx; y += cvy;
+                    rot += cvx * 2; opacity -= 0.008;
                     el.style.left = x + 'px';
                     el.style.top = y + 'px';
                     el.style.transform = `rotate(${rot}deg)`;
                     el.style.opacity = opacity;
-
-                    if (opacity > 0 && y < H + 50) {
-                        requestAnimationFrame(anim);
-                    } else {
-                        el.remove();
-                    }
+                    if (opacity > 0 && y < H + 50) { requestAnimationFrame(anim); } else { el.remove(); }
                 };
                 setTimeout(() => requestAnimationFrame(anim), Math.random() * 200);
             }
@@ -625,76 +999,44 @@
         const LINE1_TEXT = "Happy Birthday";
         const NAME_TEXT = "LAIQA";
 
-        // ── Phase 1: Stars twinkle alone (1.5s) ──
-        // ── Phase 2: Golden swirl gathers (2.8s) ──
-        // ── Phase 3: "Happy Birthday" letter-by-letter (1.8s) ──
-        // ── Phase 4: "LAIQA" letters slam in with fireworks (2.5s) ──
-        // ── Phase 5: Celebration — emojis, confetti, "Meri Jann" ──
-        // ── Phase 6: Button appears ──
-
         let phase = 0;
 
         function startTimeline() {
-            // Phase 1 → 2: Start swirl after star-gazing
-            setTimeout(() => {
-                phase = 2;
-                startSwirl();
-            }, 1500);
+            setTimeout(() => { phase = 2; startSwirl(); }, 1500);
 
-            // Phase 3: Type "Happy Birthday"
             setTimeout(() => {
                 phase = 3;
-                swirlActive = false;
-                sparkles.length = 0;
-                typeText(line1El, LINE1_TEXT, 100, () => {
-                    line1El.classList.add('shimmer');
-                });
+                swirlActive = false; sparkles.length = 0;
+                typeText(line1El, LINE1_TEXT, 100, () => { line1El.classList.add('shimmer'); });
             }, 1500 + SWIRL_GATHER_MS + 300);
 
-            // Phase 4: Slam "LAIQA" letters
             const nameStart = 1500 + SWIRL_GATHER_MS + 300 + LINE1_TEXT.length * 100 + 600;
             setTimeout(() => {
                 phase = 4;
                 document.body.classList.add('lit');
                 slamName(NAME_TEXT, () => {
-                    // Phase 5: Celebration
                     phase = 5;
                     fireworkShow();
                     setTimeout(() => confettiBurst(), 300);
                     setTimeout(() => spawnEmojis(), 500);
-                    setTimeout(() => {
-                        confettiBurst();
-                    }, 2000);
-
-                    // "Meri Jann" appears
-                    setTimeout(() => {
-                        meriJann.classList.add('show');
-                        setTimeout(() => meriJann.classList.add('pulse'), 1200);
-                    }, 1500);
-
-                    // Button appears
-                    setTimeout(() => {
-                        goBtn.classList.add('show');
-                    }, 3000);
+                    setTimeout(() => confettiBurst(), 2000);
+                    setTimeout(() => { meriJann.classList.add('show'); setTimeout(() => meriJann.classList.add('pulse'), 1200); }, 1500);
+                    setTimeout(() => { goBtn.classList.add('show'); }, 3000);
                 });
             }, nameStart);
         }
 
-        // ── Letter-by-letter typing ──
         function typeText(el, text, speed, cb) {
             el.classList.add('show');
             let i = 0;
             const type = () => {
                 if (i < text.length) {
                     el.textContent += text[i];
-                    // Mini sparkle burst on each letter
                     const rect = el.getBoundingClientRect();
                     miniSparkle(rect.right - 5, rect.top + rect.height / 2);
                     i++;
                     setTimeout(type, speed);
-                } else {
-                    if (cb) cb();
-                }
+                } else { if (cb) cb(); }
             };
             type();
         }
@@ -704,21 +1046,14 @@
                 const angle = Math.random() * Math.PI * 2;
                 const speed = 1 + Math.random() * 2;
                 fwParticles.push({
-                    x, y,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    life: 1,
-                    decay: 0.04,
-                    color: '#ffd700',
-                    size: 1 + Math.random(),
-                    trail: [],
+                    x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                    life: 1, decay: 0.04, color: '#ffd700',
+                    size: 1 + Math.random(), trail: [],
                 });
             }
         }
 
-        // ── Slam each letter of the name ──
         function slamName(text, cb) {
-            // Create letter elements
             const letters = text.split('').map(ch => {
                 const el = document.createElement('div');
                 el.className = 'name-letter';
@@ -726,21 +1061,17 @@
                 nameRow.appendChild(el);
                 return el;
             });
-
             letters.forEach((el, i) => {
                 setTimeout(() => {
                     el.classList.add('show');
-                    // Firework burst at letter position
                     const rect = el.getBoundingClientRect();
                     const cx = rect.left + rect.width / 2;
                     const cy = rect.top + rect.height / 2;
                     launchFirework(cx, cy, ['#ffd700', '#ff6fd8', '#ff9a56']);
-                    // Screen shake effect
                     document.body.style.transform = `translate(${(Math.random() - 0.5) * 4}px, ${(Math.random() - 0.5) * 4}px)`;
                     setTimeout(() => { document.body.style.transform = ''; }, 120);
                 }, i * 400);
             });
-
             setTimeout(() => {
                 letters.forEach(el => el.classList.add('shimmer'));
                 if (cb) cb();
@@ -752,7 +1083,6 @@
         // ══════════════════════════════════════════════
         function loop(t) {
             drawStars(t);
-
             if (swirlActive) {
                 updateSparkles(t);
             } else if (fwParticles.length > 0) {
@@ -761,13 +1091,12 @@
             } else if (phase >= 3) {
                 fxCtx.clearRect(0, 0, W, H);
             }
-
             requestAnimationFrame(loop);
         }
 
         // ── KICK OFF ──
         requestAnimationFrame(loop);
-        startTimeline();
+        // Timeline starts after splash dismissal (see dismissSplash())
     </script>
 </body>
 

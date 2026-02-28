@@ -16,26 +16,28 @@
         }
 
         body {
-            background: linear-gradient(135deg, #2d1b42 0%, #44234a 100%);
+            background: linear-gradient(145deg, #1a0a2a 0%, #3d0f4c 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Poppins', sans-serif;
             padding: 40px 20px;
+            color: #e0d4e8;
         }
 
         .letter-container {
             max-width: 700px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 25px;
             padding: 60px 50px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), inset 0 0 60px rgba(255, 255, 255, 0.02);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeIn 1.5s ease-out forwards;
+            position: relative;
         }
 
         @keyframes fadeIn {
@@ -45,17 +47,30 @@
             }
         }
 
+        .letter-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(248, 164, 200, 0.06) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 40px;
             padding-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .header h2 {
             font-family: 'Libre Baskerville', serif;
             font-size: 2rem;
-            color: #e8e8e8;
+            color: #ffb8e0;
             font-weight: 400;
             letter-spacing: 1px;
             margin-bottom: 10px;
@@ -68,7 +83,7 @@
         }
 
         .letter-content {
-            color: #d4d4d4;
+            color: #e0d4e8;
             line-height: 2;
             font-size: 1.05rem;
         }
@@ -99,10 +114,6 @@
             animation-delay: 2.5s;
         }
 
-        .letter-content p:nth-child(6) {
-            animation-delay: 3s;
-        }
-
         @keyframes slideIn {
             to {
                 opacity: 1;
@@ -110,21 +121,16 @@
         }
 
         .highlight {
-            color: #f8a4c8;
-            font-weight: 400;
-        }
-
-        .emphasis {
-            color: #ff9a9e;
+            color: #ff9eb8;
             font-style: italic;
         }
 
         .promises {
             background: rgba(248, 164, 200, 0.08);
             padding: 20px;
-            border-left: 3px solid #f8a4c8;
+            border-left: 3px solid #ff9eb8;
             border-radius: 5px;
-            margin: 30px 0;
+            margin: 25px 0;
         }
 
         .signature {
@@ -132,29 +138,22 @@
             margin-top: 40px;
             font-family: 'Libre Baskerville', serif;
             font-style: italic;
-            color: #f8a4c8;
+            color: #ffb8e0;
             font-size: 1.1rem;
         }
 
         .choice-section {
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
             text-align: center;
-        }
-
-        .choice-text {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 30px;
-            font-style: italic;
         }
 
         .btn-choice {
             padding: 15px 40px;
             background: transparent;
             border: 1px solid rgba(248, 164, 200, 0.5);
-            color: #f8a4c8;
+            color: #ff9eb8;
             border-radius: 50px;
             cursor: pointer;
             font-size: 1rem;
@@ -167,26 +166,11 @@
 
         .btn-choice:hover {
             background: rgba(248, 164, 200, 0.15);
-            border-color: #f8a4c8;
+            border-color: #ff9eb8;
             box-shadow: 0 0 20px rgba(248, 164, 200, 0.3);
             transform: translateY(-2px);
         }
 
-        /* Soft glowing effect */
-        .letter-container::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(248, 164, 200, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* ── Responsive ── */
         @media (max-width: 768px) {
             .letter-container {
                 padding: 40px 30px;
@@ -239,30 +223,34 @@
 <body>
     <div class="letter-container">
         <div class="header">
-            <h2>Before We Move Forward...</h2>
+            <h2>Some things I need you to know</h2>
             <p>A letter from my heart to yours</p>
         </div>
 
         <div class="letter-content">
-            <p>
-                Dear Laiqa,
-            </p>
+            <p>Dear Laiqa,</p>
 
-            <p>
-                I know some things between us haven’t been perfect, and I’ve made many mistakes.
-            </p>
+            <p>I know some things between us have not always been good, and I’ve made <span class="highlight">many
+                    mistakes</span>.maybe more than I even understand.
+                I am truly sorry for all of them.</p>
 
-            <p>
-                But one thing has always been the same—I’ve always been scared of losing you.
-                Sometimes it even feels like that fear is gone, like I could just go away somewhere…
-                but time keeps passing, and nothing really changes.
-            </p>
+            <p>But one thing has never changed — <span class="highlight">I’ve always been afraid of losing you</span>.
+                Sometimes that fear becomes very quiet, and I feel like I can just move away and everything will be
+                fine.
+                but as time passes, I realize nothing really changes.
+                You are still the person I always come back to.</p>
 
+            <div class="promises">
+                So I have made a decision.If I am not going to leave, then why not stay happily?Why not try to laugh
+                more instead of hurting each other?I really want to try. I want to fix the distance between us.
+                I want to to clear misunderstanding by talking honestly,step by step.
+                And if one day I see that I cannot be the person you need, then I promise I will step back
+                gracefully, without breaking anything more than I already have.
+            </div>
 
-            <p>
-                Finally, I’ve decided that if I’m not going to leave you, why not spend happy,
-                smiling days together? So I will try my best to overcome all the misunderstandings between us.
-                otherwise, I promise I will step back.💖
+            <p>But until that day, I am choosing <span class="highlight">you</span>.
+                I am choosing <span class="highlight">us</span>.
+                I am choosing to stay and try my best, and the rest I leave to Allah. 🤍
             </p>
 
             <div class="signature">
